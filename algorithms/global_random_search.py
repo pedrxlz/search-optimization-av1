@@ -22,6 +22,7 @@ def global_random_search(objective_function, initial_sigma, maximum_iterations, 
         Uma tupla que contém a melhor solução encontrada (xbest) e seu valor
         fitness (fbest).
     """
+    
     xbest = np.random.uniform(domain_lower_bounds[0], domain_upper_bounds[0]), \
             np.random.uniform(domain_lower_bounds[1], domain_upper_bounds[1])
     fbest = objective_function(xbest[0], xbest[1])
