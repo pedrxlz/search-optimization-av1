@@ -1,12 +1,10 @@
-
-import csv
-
-import numpy as np
-
 from algorithms.global_random_search import global_random_search
 from algorithms.local_random_search import local_random_search
 from plot import plot
+from pprint import pprint
 
+import pandas as pd
+import numpy as np
 
 # Encontrar Minimo
 def f1(x1, x2):
@@ -56,16 +54,72 @@ def f8(x1, x2):
 
 f8Dom = [(-200, 20), (-200, 20)]
 
-args = {
-    "name": "f5",
+args = [
+    {"name": "f1",
+    "objective_function": f1,
+    "type": "minimize", 
+    "sigma": .5,
+    "max_iter": 100,
+    "domain": f1Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f2",
+    "objective_function": f2,
+    "type": "maximize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f2Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f3",
+    "objective_function": f3,
+    "type": "minimize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f3Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f4",
+    "objective_function": f4,
+    "type": "minimize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f4Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f5",
     "objective_function": f5,
-    "type": "maximize", 
+    "type": "maximize",
     "sigma": .5,
     "max_iter": 1000,
     "domain": f5Dom,
     "num_executions": 100,
-    "plot": False
-}
+    "plot": False},
+    {"name": "f6",
+    "objective_function": f6,
+    "type": "maximize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f6Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f7",
+    "objective_function": f7,
+    "type": "minimize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f7Dom,
+    "num_executions": 100,
+    "plot": False},
+    {"name": "f8",
+    "objective_function": f8,
+    "type": "minimize",
+    "sigma": .5,
+    "max_iter": 1000,
+    "domain": f8Dom,
+    "num_executions": 100,
+    "plot": False}
+    ]
 
 header = ["Function", "Execution", "xbest", "fbest"]
 algorithms = [
@@ -84,24 +138,23 @@ algorithms = [
 ]
 
 for algorithm in algorithms:
-    with open(f"{algorithm["name"]}.csv", "a", newline="") as csvfile:
-        writer = csv.writer(csvfile)
-        writer.writerow(header)
+    df_aux = pd.DataFrame(columns=header, index=range(100))
+    index = 0
+    for arg in args:
+        for i in range(arg['num_executions']):
+            xbest, fbest = algorithm["function"](arg['objective_function'], arg['sigma'], arg['max_iter'], arg['domain'][0], arg['domain'][1], type=arg["type"])
+            row = [arg['name'], i+1, xbest, fbest]
+            df_aux.loc[index] = row
+            index += 1
 
-        for i in range(args['num_executions']):
-            xbest, fbest = algorithm["function"](args['objective_function'], args['sigma'], args['max_iter'], args['domain'][0], args['domain'][1], type=args["type"])
-            
-            row = [args['name'], i+1, xbest, fbest]
-            writer.writerow(row)
+            # print(f"Execution {i+1}:")
+            # print(f'xbest: ', xbest)
+            # print(f'fbest: ', fbest)
 
-            print(f"Execution {i+1}:")
-            print(f'xbest: ', xbest)
-            print(f'fbest: ', fbest)
+            if arg['plot']:
+                plot(xbest, fbest, arg['objective_function'], arg['domain'][0], arg['domain'][1])
+        df_aux.to_csv(f"{algorithm['name']}.csv", index=False)
 
-            if args['plot']:
-                plot(xbest, fbest, args['objective_function'], args['domain'][0], args['domain'][1])
-        
-
-
+grs_df = pd.read_csv("global_random_search.csv")
 
 
