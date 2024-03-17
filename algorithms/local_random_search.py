@@ -27,26 +27,17 @@ def local_random_search(objective_function, initial_sigma, maximum_iterations, d
   if type not in ["minimize", "maximize"]:
     raise ValueError("Tipo inválido: " + type)
 
-  # Inicializa a melhor solução
   xbest = np.random.uniform(domain_lower_bounds[0], domain_upper_bounds[0]), \
           np.random.uniform(domain_lower_bounds[1], domain_upper_bounds[1])
   fbest = objective_function(xbest[0], xbest[1])
 
-  # Iterações
   for _ in range(maximum_iterations):
-    # Gera solução candidata com ruído gaussiano (opcional)
-    if initial_sigma > 0:
-      x = np.random.normal(xbest, initial_sigma, size=2)
-      # Limita a solução candidata aos limites do domínio
-      x = np.clip(x, domain_lower_bounds, domain_upper_bounds)
-    else:
-      x = np.random.uniform(domain_lower_bounds[0], domain_upper_bounds[0]), \
-          np.random.uniform(domain_lower_bounds[1], domain_upper_bounds[1])
 
-    # Avalia a solução candidata
+    n = np.random.normal(0, initial_sigma, size=2)
+    x = xbest + n
+
     fval = objective_function(x[0], x[1])
 
-    # Atualiza a melhor solução
     if type == "maximize":
       if fval > fbest:
         xbest = x
