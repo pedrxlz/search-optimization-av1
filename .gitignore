@@ -1,0 +1,5 @@
+__pycache__
+quick-start
+global_random_search.csv
+local_random_search.csv
+hill_climbing.csv
