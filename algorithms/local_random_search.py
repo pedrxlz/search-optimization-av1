@@ -24,8 +24,8 @@ def local_random_search(objective_function, initial_sigma, maximum_iterations, d
       fitness (fbest).
   """
 
-  xbest = np.random.uniform(domain_lower_bounds[0], domain_upper_bounds[0]), \
-          np.random.uniform(domain_lower_bounds[1], domain_upper_bounds[1])
+  xbest = np.random.uniform(domain_lower_bounds[0], domain_lower_bounds[1]), \
+          np.random.uniform(domain_upper_bounds[0], domain_upper_bounds[1])
   fbest = objective_function(xbest[0], xbest[1])
 
   for _ in range(maximum_iterations):
