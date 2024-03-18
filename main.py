@@ -1,10 +1,11 @@
+import numpy as np
+import pandas as pd
+
 from algorithms.global_random_search import global_random_search
+from algorithms.hill_climbing import hillClimbing
 from algorithms.local_random_search import local_random_search
 from plot import plot
-from pprint import pprint
 
-import pandas as pd
-import numpy as np
 
 # Encontrar Minimo
 def f1(x1, x2):
@@ -55,71 +56,87 @@ def f8(x1, x2):
 f8Dom = [(-200, 20), (-200, 20)]
 
 args = [
-    {"name": "f1",
-    "objective_function": f1,
-    "type": "minimize", 
-    "sigma": .5,
-    "max_iter": 100,
-    "domain": f1Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f2",
-    "objective_function": f2,
-    "type": "maximize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f2Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f3",
-    "objective_function": f3,
-    "type": "minimize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f3Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f4",
-    "objective_function": f4,
-    "type": "minimize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f4Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f5",
-    "objective_function": f5,
-    "type": "maximize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f5Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f6",
-    "objective_function": f6,
-    "type": "maximize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f6Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f7",
-    "objective_function": f7,
-    "type": "minimize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f7Dom,
-    "num_executions": 100,
-    "plot": False},
-    {"name": "f8",
-    "objective_function": f8,
-    "type": "minimize",
-    "sigma": .5,
-    "max_iter": 1000,
-    "domain": f8Dom,
-    "num_executions": 100,
-    "plot": False}
-    ]
+    {
+        "name": "f1",
+        "objective_function": f1,
+        "type": "minimize", 
+        "sigma": .1,
+        "max_iter": 100,
+        "domain": f1Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {   
+        "name": "f2",
+        "objective_function": f2,
+        "type": "maximize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f2Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f3",
+        "objective_function": f3,
+        "type": "minimize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f3Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f4",
+        "objective_function": f4,
+        "type": "minimize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f4Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f5",
+        "objective_function": f5,
+        "type": "maximize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f5Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f6",
+        "objective_function": f6,
+        "type": "maximize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f6Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f7",
+        "objective_function": f7,
+        "type": "minimize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f7Dom,
+        "num_executions": 100,
+        "plot": False
+    },
+    {
+        "name": "f8",
+        "objective_function": f8,
+        "type": "minimize",
+        "sigma": .1,
+        "max_iter": 1000,
+        "domain": f8Dom,
+        "num_executions": 100,
+        "plot": False
+    }
+]
 
 header = ["Function", "Execution", "xbest", "fbest"]
 algorithms = [
@@ -131,10 +148,10 @@ algorithms = [
         "name": "global_random_search",
         "function": global_random_search
     },
-    # {
-    #     "name": "hill_climbing",
-    #     "function": hill_climbing
-    # }
+    {
+        "name": "hill_climbing",
+        "function": hillClimbing
+    }
 ]
 
 for algorithm in algorithms:
@@ -147,14 +164,10 @@ for algorithm in algorithms:
             df_aux.loc[index] = row
             index += 1
 
-            # print(f"Execution {i+1}:")
-            # print(f'xbest: ', xbest)
-            # print(f'fbest: ', fbest)
-
             if arg['plot']:
                 plot(xbest, fbest, arg['objective_function'], arg['domain'][0], arg['domain'][1])
         df_aux.to_csv(f"{algorithm['name']}.csv", index=False)
 
-grs_df = pd.read_csv("global_random_search.csv")
+
 
 
