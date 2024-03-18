@@ -6,7 +6,6 @@ from algorithms.hill_climbing import hillClimbing
 from algorithms.local_random_search import local_random_search
 from plot import plot
 
-
 # Encontrar Minimo
 def f1(x1, x2):
     return x1**2 + x2**2
@@ -167,7 +166,3 @@ for algorithm in algorithms:
             if arg['plot']:
                 plot(xbest, fbest, arg['objective_function'], arg['domain'][0], arg['domain'][1])
         df_aux.to_csv(f"{algorithm['name']}.csv", index=False)
-
-
-
-

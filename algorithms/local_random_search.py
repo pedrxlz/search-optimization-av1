@@ -1,6 +1,4 @@
-
 import numpy as np
-
 
 def local_random_search(objective_function, initial_sigma, maximum_iterations, domain_lower_bounds, domain_upper_bounds, type = "minimize"):
   """
@@ -44,8 +42,4 @@ def local_random_search(objective_function, initial_sigma, maximum_iterations, d
         xbest = x
         fbest = fval
 
-  return xbest, fbest
-
-
-
-    
+  return xbest, fbest 

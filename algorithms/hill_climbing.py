@@ -1,12 +1,10 @@
 import numpy as np
 
-
 def gerarCanditadoVizinho(x, e):
     """
     Gera um candidato vizinho de x.
     """
     return np.random.uniform(low= x - e, high= x + e)
-
 
 def hillClimbing(f, initial_sigma, max_iter, domain_lower_bounds, domain_upper_bounds, type = "minimize", max_vizinhos= 1000):
     i = 0
