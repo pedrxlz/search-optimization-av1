@@ -1,12 +1,13 @@
 import numpy as np
 
+
 def gerarCanditadoVizinho(x, e):
     """
     Gera um candidato vizinho de x.
     """
     return np.random.uniform(low= x - e, high= x + e)
 
-def hillClimbing(f, initial_sigma, max_iter, domain_lower_bounds, domain_upper_bounds, type = "minimize", max_vizinhos= 1000):
+def hillClimbing(f, initial_sigma, max_iter, domain_lower_bounds, domain_upper_bounds, t = "minimize", max_vizinhos= 1000):
     i = 0
     xAtual, yAtual = np.random.uniform(domain_lower_bounds[0], domain_lower_bounds[1]), \
             np.random.uniform(domain_upper_bounds[0], domain_upper_bounds[1])
@@ -19,14 +20,14 @@ def hillClimbing(f, initial_sigma, max_iter, domain_lower_bounds, domain_upper_b
             y_vizinho = gerarCanditadoVizinho(yAtual, initial_sigma)
             f_vizinho = f(x_vizinho, y_vizinho)
             
-            if type == "minimize" and f_vizinho < fAtual:
+            if t == "minimize" and f_vizinho < fAtual:
                 xAtual = x_vizinho
                 yAtual = y_vizinho
                 fAtual = f_vizinho
                 melhoria = True
                 break
             
-            elif type == "maximize" and f_vizinho > fAtual:
+            elif t == "maximize" and f_vizinho > fAtual:
                 xAtual = x_vizinho
                 yAtual = y_vizinho
                 fAtual = f_vizinho

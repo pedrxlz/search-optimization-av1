@@ -1,3 +1,5 @@
+import ast
+
 import numpy as np
 import pandas as pd
 
@@ -5,6 +7,7 @@ from algorithms.global_random_search import global_random_search
 from algorithms.hill_climbing import hillClimbing
 from algorithms.local_random_search import local_random_search
 from plot import plot
+
 
 # Encontrar Minimo
 def f1(x1, x2):
@@ -14,7 +17,7 @@ f1Dom = [(-100, 100), (-100, 100)]
 
 # Encontrar máximo
 def f2(x1, x2):
-    return np.exp(-(x1**2 + x2**2)) + 2 * np.exp(-(x1-1.7)**2 + (x2-1.7)**2)
+    return np.exp(-(x1**2 + x2**2)) + 2 * np.exp(-((x1-1.7)**2 + (x2-1.7)**2))
 
 f2Dom = [(-2, 4), (-2, 5)]
 
@@ -158,11 +161,33 @@ for algorithm in algorithms:
     index = 0
     for arg in args:
         for i in range(arg['num_executions']):
-            xbest, fbest = algorithm["function"](arg['objective_function'], arg['sigma'], arg['max_iter'], arg['domain'][0], arg['domain'][1], type=arg["type"])
-            row = [arg['name'], i+1, xbest, fbest]
+            xbest, fbest = algorithm["function"](arg['objective_function'], arg['sigma'], arg['max_iter'], arg['domain'][0], arg['domain'][1], t=arg["type"])
+            row = [arg['name'], i+1, (xbest), fbest]
             df_aux.loc[index] = row
             index += 1
-
-            if arg['plot']:
-                plot(xbest, fbest, arg['objective_function'], arg['domain'][0], arg['domain'][1])
         df_aux.to_csv(f"{algorithm['name']}.csv", index=False)
+
+df = pd.DataFrame(columns=["Function", "Metodo", "xbest", "fbest"])
+for arg in args:
+    for algorithm in algorithms:
+        df_aux = pd.read_csv(f"{algorithm['name']}.csv")
+        df_aux = df_aux[df_aux["Function"] == arg["name"]]
+        metodo = algorithm["name"]
+        xbest = df_aux["xbest"].mode().values[0]
+        fbest = df_aux[df_aux["xbest"] == xbest]["fbest"].values[0]
+        row = [arg["name"], metodo, xbest, fbest]
+        df.loc[len(df)] = row
+df.to_csv("best_solutions.csv", index=False)
+        
+        
+
+df = pd.read_csv('best_solutions.csv')
+
+grouped = df.groupby('Function')
+for name, group in grouped:
+    xbest_values = group['xbest'].apply(ast.literal_eval)
+    fbest_values = group['fbest']
+    methods = group['Metodo']
+    
+    arg = next((arg for arg in args if arg["name"] == name), None)
+    plot([i for i in xbest_values], [a for a in fbest_values], arg['objective_function'], arg['domain'][0], arg['domain'][1], [m for m in methods])
