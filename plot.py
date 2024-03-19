@@ -11,13 +11,14 @@ def plot(xbest, fbest, objective_function, dom1, dom2, methods):
     ax = fig.add_subplot(projection='3d')
     ax.plot_surface(X, Y, Z, cmap='jet', rstride=10, cstride=10, alpha=0.6)
     
-    colors = cm.rainbow(np.linspace(0, 1, len(xbest)))
+    colors = ['r', 'g', 'b']
     markers = ['o', 'h', '*']
     
     for i in range(len(xbest)):
-        ax.scatter(xbest[i][0], xbest[i][1], fbest[i], color=colors[i], marker=markers[i], s=200)
+        ax.scatter(xbest[i][0], xbest[i][1], fbest[i], color=colors[i], marker=markers[i], s=200, label=f'{methods[i]}: {round(fbest[i], 4)}')
     
-    ax.legend([f'{methods[i]}: {round(fbest[i], 4)}' for i in range(len(xbest))])
+    ax.legend()
+    
         
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
