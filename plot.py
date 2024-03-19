@@ -2,7 +2,6 @@ import matplotlib.cm as cm
 import numpy as np
 from matplotlib import pyplot as plt
 
-
 def plot(xbest, fbest, objective_function, dom1, dom2, methods):
     x = np.linspace(dom1[0], dom1[1], 100)
     y = np.linspace(dom2[0], dom2[1], 100)
@@ -15,23 +14,15 @@ def plot(xbest, fbest, objective_function, dom1, dom2, methods):
     colors = cm.rainbow(np.linspace(0, 1, len(xbest)))
     markers = ['o', 'h', '*']
     
-    
     for i in range(len(xbest)):
         ax.scatter(xbest[i][0], xbest[i][1], fbest[i], color=colors[i], marker=markers[i], s=200)
     
     ax.legend([f'{methods[i]}: {round(fbest[i], 4)}' for i in range(len(xbest))])
-    
         
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
     ax.set_title(objective_function.__name__)
     
-    
-    
-    
     plt.tight_layout()
     plt.show()
-
-    
-    
